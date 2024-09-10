@@ -22,10 +22,14 @@ var currentPhrase;
 var phraseIndex = 0;
 var svaraRadius = 20;
 var svaraLine = 20;
+var svaraLineX1;
 // var minHz;
 // var maxHz;
 var pitchTrack;
 // var melodicLine = {};
+var shahedY;
+var maxPitch;
+var minPitch;
 var phrasesTimestamps = [];
 var phraseVerticalNumber = 15;
 var phraseH = (spaceHeight - 20) / phraseVerticalNumber;
@@ -99,7 +103,8 @@ function preload() {
 }
 
 function setup () {
-  var canvas = createCanvas(extraSpaceW+spaceWidth, extraSpaceH+spaceHeight);
+  // var canvas = createCanvas(extraSpaceW+spaceWidth, extraSpaceH+spaceHeight);
+  var canvas = createCanvas(spaceWidth, extraSpaceH+spaceHeight);
   var div = select("#sketch-holder");
   div.style("width: " + width + "px; margin: 10px auto; position: relative;");
   canvas.parent("sketch-holder");
@@ -124,7 +129,8 @@ function setup () {
   cursorTop = extraSpaceH + title_y + title_size + 20 + svaraRadius;
   cursorBottom = navBox.y1 - 20 - svaraRadius;
   melCursorX = width - (svaraRadius * 4) - svaraLine - 20;
-  svaraLineX1 = extraSpaceW + (svaraRadius * 4) + svaraLine + 10;
+  // svaraLineX1 = extraSpaceW + (svaraRadius * 4) + svaraLine + 10;
+  svaraLineX1 = (svaraRadius * 4) + svaraLine + 10;
 
   //Language
   var lang = select("html").elt.lang;
@@ -149,7 +155,7 @@ function setup () {
   infoLink = select("#sa-info-link");
   infoLink.position(width - 10 - 45, extraSpaceH + 10);
   selectMenu = createSelect()
-    .size(extraSpaceW-20, 25)
+    .size(200, 25)
     .position(10, 10)
     .changed(start)
     .parent("sketch-holder");
@@ -163,7 +169,7 @@ function setup () {
   for (var i = 0; i < recordingsList.length; i++) {
     selectMenu.option(recordingsList[i].selectOption, i);
   }
-  buttonPlay = createButton(lang_load)
+  buttonPlay = createButton(lang_start)
     .size(120, 25)
     .position(width - 120 - 10, 10)
     .mouseClicked(player)
@@ -185,23 +191,26 @@ function draw () {
   if (gusheName != undefined) {
     var gusheW = textWidth(gusheName);
   }
-  text(gusheName, extraSpaceW + title_x, extraSpaceH + title_y + title_size);
+  // text(gusheName, extraSpaceW + title_x, extraSpaceH + title_y + title_size);
+  text(gusheName, title_x, extraSpaceH + title_y + title_size);
 
   stroke(0, 50);
   strokeWeight(1);
-  line(extraSpaceW + 20, extraSpaceH + title_y + title_size + 10, width - 20, extraSpaceH + title_y + title_size + 10);
+  // line(extraSpaceW + 20, extraSpaceH + title_y + title_size + 10, width - 20, extraSpaceH + title_y + title_size + 10);
+  line(20, extraSpaceH + title_y + title_size + 10, width - 20, extraSpaceH + title_y + title_size + 10);
 
   stroke(0, 150);
   strokeWeight(1);
   textSize(title_size*0.9);
   fill(0, 150);
-  text(" - " + artist, extraSpaceW + title_x + gusheW, extraSpaceH + title_y + title_size);
+  // text(" - " + artist, extraSpaceW + title_x + gusheW, extraSpaceH + title_y + title_size);
+  text(" - " + artist, title_x + gusheW, extraSpaceH + title_y + title_size);
 
-  stroke(frontColor);
-  strokeWeight(2);
-  noFill();
-  rect(phrasesWindowMargin/2, extraSpaceH+10,
-       extraSpaceW-phrasesWindowMargin/2, spaceHeight-20, 10);
+  // stroke(frontColor);
+  // strokeWeight(2);
+  // noFill();
+  // rect(phrasesWindowMargin/2, extraSpaceH+10,
+  //      extraSpaceW-phrasesWindowMargin/2, spaceHeight-20, 10);
 
   for (var i = 0; i < svaraList.length; i++) {
     svaraList[i].displayLines();
@@ -221,6 +230,17 @@ function draw () {
       currentTime = track.currentTime();
     }
 
+    stroke(frontColor);
+    strokeWeight(2);
+    line(svaraLineX1, shahedY, melCursorX, shahedY);
+
+    textAlign(LEFT, CENTER);
+    textSize(20);
+    textStyle(BOLD);
+    noStroke();
+    fill(frontColor);
+    text("šāhed", melCursorX + 20, shahedY)
+
     for (var i = 0; i < melCursorX - svaraLineX1; i++) {
       var thisPoint = melCursorX - svaraLineX1 - i;
       var lineX1 = (int(currentTime * 100) - thisPoint) / 100;
@@ -230,8 +250,8 @@ function draw () {
         line(svaraLineX1+i, cursorTop-svaraRadius, svaraLineX1+i, cursorBottom);
       }
       var lineX2 = lineX1 + 0.01;
-      var lineY1 = map(pitchTrack[lineX1.toFixed(2)], -700, 1900, cursorBottom, cursorTop);
-      var lineY2 = map(pitchTrack[lineX2.toFixed(2)], -700, 1900, cursorBottom, cursorTop);
+      var lineY1 = map(pitchTrack[lineX1.toFixed(2)], minPitch, maxPitch, cursorBottom, cursorTop);
+      var lineY2 = map(pitchTrack[lineX2.toFixed(2)], minPitch, maxPitch, cursorBottom, cursorTop);
       if (lineY1 <= cursorBottom && lineY1 >= cursorTop && lineY2 <= cursorBottom && lineY2 >= cursorTop) {
         if (phrasesTimestamps.includes(lineX1.toFixed(2))) {
           stroke(255, 0, 0);
@@ -245,8 +265,9 @@ function draw () {
       }
     }
     var p = pitchTrack[currentTime.toFixed(2)];
-    if (p != "s" && p >= -700 && p <= 1900) {
-      var targetY = map(p, -700, 1900, cursorBottom, cursorTop);
+    // if (p != "s" && p >= -700 && p <= 1900) {
+    if (p != "s") {
+      var targetY = map(p, minPitch, maxPitch, cursorBottom, cursorTop);
       cursorY += (targetY - cursorY) * easing;
       stroke(frontColor);
       strokeWeight(1);
@@ -265,17 +286,18 @@ function draw () {
 
   navCursor.display();
 
-  textAlign(RIGHT, BOTTOM);
-  textSize(12);
-  textStyle(NORMAL);
-  noStroke();
-  fill(frontColor);
-  text(mpmTxt, extraSpaceW + 10 + 65, navBox.y1 - 5);
+  // textAlign(RIGHT, BOTTOM);
+  // textSize(12);
+  // textStyle(NORMAL);
+  // noStroke();
+  // fill(frontColor);
+  // text(mpmTxt, extraSpaceW + 10 + 65, navBox.y1 - 5);
 
   navBox.displayFront();
 }
 
 function start () {
+  selectMenu.elt.blur();
   if (loaded) {
     track.stop();
   }
@@ -283,24 +305,28 @@ function start () {
   loaded = false;
   currentTime = 0;
   jump = undefined;
-  talBoxes = [];
+  // talBoxes = [];
   // talList = [];
   // talName = undefined;
-  samList = [];
+  // samList = [];
   // currentTal = undefined;
-  mpmTxt = undefined;
-  currentPhrase = undefined;
+  // mpmTxt = undefined;
+  // currentPhrase = undefined;
   // melodicLine = {}
-  phrasesTimestamps = [];
+  // phrasesTimestamps = [];
   svaraList = [];
   soundList = {};
-  phrasesList = [];
+  // phrasesList = [];
 
   var currentRecording = recordingsInfo[recordingsList[selectMenu.value()].mbid];
   trackFile = currentRecording.info.trackFile;
+  track = loadSound("../tracks/" + trackFile, soundLoaded, failedLoad);
   var gushe = gusheInfo[currentRecording.gushe.gushe];
-  var sa = currentRecording.gushe.sa;
-  var intonation = currentRecording.gushe.intonation;
+  var shahed = currentRecording.gushe.shahed;
+  maxPitch = currentRecording.gushe.max + 100;
+  minPitch = currentRecording.gushe.min - 100;
+  shahedY = map(0, minPitch, maxPitch, cursorBottom, cursorTop);
+  // var intonation = currentRecording.gushe.intonation;
   gusheName = gushe.name + " " + gushe.nameTrans;
   artist = currentRecording.info.artist;
   link = currentRecording.info.link;
@@ -308,66 +334,66 @@ function start () {
     .html("+info");
   trackDuration = currentRecording.info.duration;
   pitchSpace = gushe.pitchSpace;
-  var key;
-  var keyIndex = 0;
-  for (var i = 0; i < pitchSpace.length; i++) {
-    var svaraName = pitchSpace[i];
-    var svaraIndex = svaras.search(svaraName);
-    if (svaraIndex >= 5) {
-      var cents = svaraIndex * 100 - 1200;
-      var peak = intonation[svaraName+"0"];
-      if (peak != undefined) {
-        key = octave0[keyIndex];
-        createSound(cents, sa, key);
-        keyIndex++
-      } else {
-        key = "";
-      }
-      var svara = new CreateSvara(svaraName, cents, gushe.vadi, gushe.samvadi, key);
-      svaraList.push(svara);
-    }
-  }
-  var keyIndex = 0;
-  for (var i = 0; i < pitchSpace.length; i++) {
-    var svaraName = pitchSpace[i];
-    var cents = svaras.search(svaraName) * 100;
-    var peak = intonation[svaraName+"1"];
-    if (peak != undefined) {
-      key = octave1[keyIndex];
-      createSound(cents, sa, key);
-      keyIndex++
-    } else {
-      key = "";
-    }
-    var svara = new CreateSvara(svaraName, cents, gushe.vadi, gushe.samvadi, key);
-    svaraList.push(svara);
-  }
-  var keyIndex = 0;
-  for (var i = 0; i < pitchSpace.length; i++) {
-    var svaraName = pitchSpace[i];
-    var svaraIndex = svaras.search(svaraName);
-    if (svaraIndex <= 7) {
-      var cents = svaraIndex * 100 + 1200;
-      var peak = intonation[svaraName+"2"];
-      if (peak != undefined) {
-        key = octave2[keyIndex];
-        createSound(cents, sa, key);
-        keyIndex++
-      } else {
-        key = "";
-      }
-      var svara = new CreateSvara(svaraName, cents, gushe.vadi, gushe.samvadi, key);
-      svaraList.push(svara);
-    }
-  }
-  phrases = currentRecording.gushe.phrases;
-  var labels = Object.keys(phrases);
-  if (labels.length > 0) {
-    for (var i = 0; i < labels.length; i++) {
-      var phrase = new CreatePhrase(phrases[labels[i]], labels[i], i, labels.length);
-      phrasesList.push(phrase);
-    }
-  }
+  // var key;
+  // var keyIndex = 0;
+  // for (var i = 0; i < pitchSpace.length; i++) {
+  //   var svaraName = pitchSpace[i];
+  //   var svaraIndex = svaras.search(svaraName);
+  //   if (svaraIndex >= 5) {
+  //     var cents = svaraIndex * 100 - 1200;
+  //     var peak = intonation[svaraName+"0"];
+  //     if (peak != undefined) {
+  //       key = octave0[keyIndex];
+  //       createSound(cents, sa, key);
+  //       keyIndex++
+  //     } else {
+  //       key = "";
+  //     }
+  //     var svara = new CreateSvara(svaraName, cents, gushe.vadi, gushe.samvadi, key);
+  //     svaraList.push(svara);
+  //   }
+  // }
+  // var keyIndex = 0;
+  // for (var i = 0; i < pitchSpace.length; i++) {
+  //   var svaraName = pitchSpace[i];
+  //   var cents = svaras.search(svaraName) * 100;
+  //   var peak = intonation[svaraName+"1"];
+  //   if (peak != undefined) {
+  //     key = octave1[keyIndex];
+  //     createSound(cents, sa, key);
+  //     keyIndex++
+  //   } else {
+  //     key = "";
+  //   }
+  //   var svara = new CreateSvara(svaraName, cents, gushe.vadi, gushe.samvadi, key);
+  //   svaraList.push(svara);
+  // }
+  // var keyIndex = 0;
+  // for (var i = 0; i < pitchSpace.length; i++) {
+  //   var svaraName = pitchSpace[i];
+  //   var svaraIndex = svaras.search(svaraName);
+  //   if (svaraIndex <= 7) {
+  //     var cents = svaraIndex * 100 + 1200;
+  //     var peak = intonation[svaraName+"2"];
+  //     if (peak != undefined) {
+  //       key = octave2[keyIndex];
+  //       createSound(cents, sa, key);
+  //       keyIndex++
+  //     } else {
+  //       key = "";
+  //     }
+  //     var svara = new CreateSvara(svaraName, cents, gushe.vadi, gushe.samvadi, key);
+  //     svaraList.push(svara);
+  //   }
+  // }
+  // phrases = currentRecording.gushe.phrases;
+  // var labels = Object.keys(phrases);
+  // if (labels.length > 0) {
+  //   for (var i = 0; i < labels.length; i++) {
+  //     var phrase = new CreatePhrase(phrases[labels[i]], labels[i], i, labels.length);
+  //     phrasesList.push(phrase);
+  //   }
+  // }
 
   pitchTrack = loadJSON('../files/pitchTracks/'+recordingsList[selectMenu.value()].mbid+'_pitchTrack.json');
 
@@ -390,7 +416,8 @@ function start () {
 }
 
 function CreateNavigationBox () {
-  this.x1 = extraSpaceW + 10;
+  // this.x1 = extraSpaceW + 10;
+  this.x1 = 10;
   this.x2 = width - 10;
   this.y1 = height - 10 - navBoxH;
   this.y2 = height - 10;
@@ -703,7 +730,8 @@ function CreateClock () {
     textStyle(NORMAL);
     noStroke();
     fill(frontColor);
-    text(this.clock, extraSpaceW + spaceWidth/2, navBox.y1 - 5);
+    // text(this.clock, extraSpaceW + spaceWidth/2, navBox.y1 - 5);
+    text(this.clock, spaceWidth/2, navBox.y1 - 5);
   }
 }
 
@@ -759,6 +787,12 @@ function mouseClicked () {
 
 function keyPressed () {
   soundList[key.toLowerCase()].start();
+}
+
+function keyTyped () {
+  if (key == " ") {
+    player();
+  }
 }
 
 function keyReleased () {
