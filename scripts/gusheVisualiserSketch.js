@@ -96,9 +96,9 @@ var octave1 = "asdfghjkl;";
 var octave2 = "zxcvbnm,./";
 
 function preload() {
-  recordingsList = loadJSON("../files/recordingsList.json");
-  recordingsInfo = loadJSON("../files/recordingsInfo.json");
-  gusheInfo = loadJSON("../files/gusheInfo.json");
+  recordingsList = loadJSON("files/recordingsList.json");
+  recordingsInfo = loadJSON("files/recordingsInfo.json");
+  gusheInfo = loadJSON("files/gusheInfo.json");
   // talInfo = loadJSON("../files/talInfo.json");
 }
 
