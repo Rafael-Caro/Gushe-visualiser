@@ -411,7 +411,7 @@ function start () {
 
   clock = new CreateClock;
 
-  buttonPlay.html(lang_load);
+  // buttonPlay.html(lang_load);
   buttonPlay.removeAttribute("disabled");
 }
 
