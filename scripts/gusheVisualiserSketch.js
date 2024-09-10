@@ -320,7 +320,7 @@ function start () {
 
   var currentRecording = recordingsInfo[recordingsList[selectMenu.value()].mbid];
   trackFile = currentRecording.info.trackFile;
-  track = loadSound("../tracks/" + trackFile, soundLoaded, failedLoad);
+  track = loadSound("tracks/" + trackFile, soundLoaded, failedLoad);
   var gushe = gusheInfo[currentRecording.gushe.gushe];
   var shahed = currentRecording.gushe.shahed;
   maxPitch = currentRecording.gushe.max + 100;
@@ -395,7 +395,7 @@ function start () {
   //   }
   // }
 
-  pitchTrack = loadJSON('../files/pitchTracks/'+recordingsList[selectMenu.value()].mbid+'_pitchTrack.json');
+  pitchTrack = loadJSON('files/pitchTracks/'+recordingsList[selectMenu.value()].mbid+'_pitchTrack.json');
 
   // for (var i = 0; i < currentRecording.talList.length; i++) {
   //   var tal = currentRecording.talList[i];
@@ -758,7 +758,7 @@ function player () {
     buttonPlay.html(lang_loading);
     buttonPlay.attribute("disabled", "true");
     selectMenu.attribute("disabled", "true");
-    track = loadSound("../tracks/" + trackFile, soundLoaded, failedLoad);
+    track = loadSound("tracks/" + trackFile, soundLoaded, failedLoad);
   }
 }
 
