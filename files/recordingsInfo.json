@@ -1,0 +1,18 @@
+{
+  "0430401f-6ca3-404c-b4e2-458664ee2b33": {
+    "info": {
+      "title": "Darāmad-e Mahur",
+      "artist": "Mohammad Khodadadi",
+      "link": "https://musicbrainz.org/recording/0430401f-6ca3-404c-b4e2-458664ee2b33",
+      "trackFile": "0430401f-6ca3-404c-b4e2-458664ee2b33.mp3",
+      "duration": 71
+    },
+    "gushe": {
+      "gushe": "daramad-e_mahur",
+      "shahed": 1045.32,
+      "intonation": {"D0":-280,"N0":-100,"S1":0,"R1":210,"G1":390,"M1":600,"P1":690,"D1":900,"N1":1100,"S2":1200},
+      "phrases": {}
+    },
+    "talList": []
+  }
+}
