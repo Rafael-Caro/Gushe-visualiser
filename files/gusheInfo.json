@@ -1,7 +1,10 @@
 {
   "daramad-e_mahur": {
     "name": "درآمد ماهور",
-    "nameTrans": "Darāmad-e Māhur" ,
-    "pitchSpace": [-700, -500, -300, -200, 0, 200, 300, 500, 700, 800]
+    "nameTrans": "Darāmad-e Māhur"
+  },
+  "daramad-e_dashti": {
+    "name": "درآمد دشتی",
+    "nameTrans": "Darāmad-e Dašti"
   }
 }

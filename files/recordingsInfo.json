@@ -13,5 +13,20 @@
       "max": 548,
       "min": -722
     }
+  },
+  "67d7a5d6-e3aa-431a-a1e1-68df78c2f1a8": {
+    "info": {
+      "title": "Darāmad-e Dašti",
+      "artist": "Negar Bouban",
+      "link": "https://musicbrainz.org/recording/67d7a5d6-e3aa-431a-a1e1-68df78c2f1a8",
+      "trackFile": "67d7a5d6-e3aa-431a-a1e1-68df78c2f1a8.mp3",
+      "duration": 58
+    },
+    "gushe": {
+      "gushe": "daramad-e_dashti",
+      "shahed": 1045.32,
+      "max": 791,
+      "min": -1399
+    }
   }
 }
