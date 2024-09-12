@@ -516,10 +516,10 @@ function CreateNavCursor () {
 
     if (navBox.x2 - navCursorW/2 - this.x < 0.1) {
       buttonPlay.html(lang_start);
-      track.stop();
+      track.pause();
       paused = true;
-      currentTime = 0;
-      phraseIndex = 0;
+      // currentTime = 0;
+      // phraseIndex = 0;
     }
   }
 
