@@ -28,6 +28,9 @@ var semitoneLines = [];
 // var maxHz;
 var pitchTrack;
 // var melodicLine = {};
+var histogram = [];
+var histBoundary = 130;
+var leftMargin = 30;
 var shahedY;
 var maxPitch;
 var minPitch;
@@ -213,12 +216,12 @@ function draw () {
   // rect(phrasesWindowMargin/2, extraSpaceH+10,
   //      extraSpaceW-phrasesWindowMargin/2, spaceHeight-20, 10);
 
-  for (var i = 0; i < svaraList.length; i++) {
-    svaraList[i].displayLines();
-  }
-  for (var i = 0; i < svaraList.length; i++) {
-    svaraList[i].displaySvara();
-  }
+  // for (var i = 0; i < svaraList.length; i++) {
+  //   svaraList[i].displayLines();
+  // }
+  // for (var i = 0; i < svaraList.length; i++) {
+  //   svaraList[i].displaySvara();
+  // }
 
   navBox.displayBack();
 
@@ -233,12 +236,12 @@ function draw () {
 
     stroke(frontColor);
     strokeWeight(2);
-    line(svaraLineX1, shahedY, melCursorX, shahedY);
+    line(histBoundary, shahedY, melCursorX, shahedY);
 
     stroke(0, 50);
     strokeWeight(1);
     for (var i = 0; i < semitoneLines.length; i++) {
-      line(svaraLineX1, semitoneLines[i], melCursorX, semitoneLines[i]);
+      line(histBoundary, semitoneLines[i], melCursorX, semitoneLines[i]);
     }
 
     textAlign(LEFT, CENTER);
@@ -248,13 +251,16 @@ function draw () {
     fill(frontColor);
     text("šāhed", melCursorX + 20, shahedY)
 
-    for (var i = 0; i < melCursorX - svaraLineX1; i++) {
-      var thisPoint = melCursorX - svaraLineX1 - i;
+    for (var i = 0; i < melCursorX - histBoundary; i++) {
+      var thisPoint = melCursorX - histBoundary - i;
+    // for (var i = 0; i < melCursorX - svaraLineX1; i++) {
+    //   var thisPoint = melCursorX - svaraLineX1 - i;
       var lineX1 = (int(currentTime * 100) - thisPoint) / 100;
       if (samList.includes(lineX1)) {
         stroke(frontColor);
         strokeWeight(1);
-        line(svaraLineX1+i, cursorTop-svaraRadius, svaraLineX1+i, cursorBottom);
+        // line(svaraLineX1+i, cursorTop-svaraRadius, svaraLineX1+i, cursorBottom);
+        line(histBoundary+i, cursorTop-svaraRadius, histBoundary+i, cursorBottom);
       }
       var lineX2 = lineX1 + 0.01;
       var lineY1 = map(pitchTrack[lineX1.toFixed(2)], minPitch, maxPitch, cursorBottom, cursorTop);
@@ -268,9 +274,17 @@ function draw () {
           fill(255);
         }
         strokeWeight(4);
-        line(svaraLineX1+i, lineY1, svaraLineX1+i+1, lineY2);
+        // line(svaraLineX1+i, lineY1, svaraLineX1+i+1, lineY2);
+        line(histBoundary+i, lineY1, histBoundary+i+1, lineY2);
       }
     }
+
+    stroke(frontColor);
+    strokeWeight(1);
+    for (var i = 0; i < histogram.length; i++) {
+      point(histogram[i][0], histogram[i][1]);
+    }
+
     var p = pitchTrack[currentTime.toFixed(2)];
     // if (p != "s" && p >= -700 && p <= 1900) {
     if (p != "s") {
@@ -279,17 +293,18 @@ function draw () {
       stroke(frontColor);
       strokeWeight(1);
       ellipse(melCursorX, cursorY, melCursorRadius, melCursorRadius);
+      line(leftMargin, targetY, histBoundary-20, targetY);
     }
   }
 
-  for (var i = 0; i < talBoxes.length; i++) {
-    talBoxes[i].display();
-  }
-
-  for (var i = 0; i < phrasesList.length; i++) {
-    phrasesList[i].update();
-    phrasesList[i].display();
-  }
+  // for (var i = 0; i < talBoxes.length; i++) {
+  //   talBoxes[i].display();
+  // }
+  //
+  // for (var i = 0; i < phrasesList.length; i++) {
+  //   phrasesList[i].update();
+  //   phrasesList[i].display();
+  // }
 
   navCursor.display();
 
@@ -347,6 +362,9 @@ function start () {
     .html("+info");
   trackDuration = currentRecording.info.duration;
   pitchSpace = gushe.pitchSpace;
+
+  var histData = loadJSON('files/pitchHistograms/'+recordingsList[selectMenu.value()].mbid+'_pitchHistogram.json', LoadHistogram);
+
   // var key;
   // var keyIndex = 0;
   // for (var i = 0; i < pitchSpace.length; i++) {
@@ -425,7 +443,16 @@ function start () {
   clock = new CreateClock;
 
   // buttonPlay.html(lang_load);
-  buttonPlay.removeAttribute("disabled");
+}
+
+function LoadHistogram (hist) {
+  var histMax = hist.max;
+  var histMin = hist.min;
+  for (var i = 0; i < hist.hist.length; i++) {
+    var x = map(hist.hist[i][1], histMax, histMin, leftMargin, histBoundary-20);
+    var y = map(hist.hist[i][0], minPitch, maxPitch, cursorBottom, cursorTop);
+    histogram.push([x, y]);
+  }
 }
 
 function CreateNavigationBox () {
