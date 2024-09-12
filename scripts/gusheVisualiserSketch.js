@@ -23,6 +23,7 @@ var phraseIndex = 0;
 var svaraRadius = 20;
 var svaraLine = 20;
 var svaraLineX1;
+var semitoneLines = [];
 // var minHz;
 // var maxHz;
 var pitchTrack;
@@ -234,6 +235,12 @@ function draw () {
     strokeWeight(2);
     line(svaraLineX1, shahedY, melCursorX, shahedY);
 
+    stroke(0, 50);
+    strokeWeight(1);
+    for (var i = 0; i < semitoneLines.length; i++) {
+      line(svaraLineX1, semitoneLines[i], melCursorX, semitoneLines[i]);
+    }
+
     textAlign(LEFT, CENTER);
     textSize(20);
     textStyle(BOLD);
@@ -325,6 +332,12 @@ function start () {
   var shahed = currentRecording.gushe.shahed;
   maxPitch = currentRecording.gushe.max + 100;
   minPitch = currentRecording.gushe.min - 100;
+  var minLine = Math.ceil(minPitch/100) * 100;
+  for (var i = minLine; i < maxPitch; i += 100) {
+    if (i != 0) {
+      semitoneLines.push(map(i, minPitch, maxPitch, cursorBottom, cursorTop));
+    }
+  }
   shahedY = map(0, minPitch, maxPitch, cursorBottom, cursorTop);
   // var intonation = currentRecording.gushe.intonation;
   gusheName = gushe.name + " " + gushe.nameTrans;
