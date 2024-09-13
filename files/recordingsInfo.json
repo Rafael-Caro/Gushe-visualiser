@@ -28,5 +28,35 @@
       "max": 791,
       "min": -1400
     }
+  },
+  "7d88c651-5dea-48e5-b21a-ac964cff5cad": {
+    "info": {
+      "title": "Darāmad-e Navā",
+      "artist": "Farahnaz Sahebghalam",
+      "link": "https://musicbrainz.org/recording/7d88c651-5dea-48e5-b21a-ac964cff5cad",
+      "trackFile": "7d88c651-5dea-48e5-b21a-ac964cff5cad.mp3",
+      "duration": 140
+    },
+    "gushe": {
+      "gushe": "daramad-e_nava",
+      "shahed": 332.67,
+      "max": 900,
+      "min": -800
+    }
+  },
+  "37acb317-3ef0-4f91-ad1f-36d793ba7378": {
+    "info": {
+      "title": "Darāmad-e Segāh",
+      "artist": "Reza Zalpour",
+      "link": "https://musicbrainz.org/recording/37acb317-3ef0-4f91-ad1f-36d793ba7378",
+      "trackFile": "37acb317-3ef0-4f91-ad1f-36d793ba7378.mp3",
+      "duration": 76
+    },
+    "gushe": {
+      "gushe": "daramad-e_segah",
+      "shahed": 160.83,
+      "max": 1000,
+      "min": -400
+    }
   }
 }

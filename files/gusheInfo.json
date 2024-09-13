@@ -1,10 +1,18 @@
 {
+  "daramad-e_dashti": {
+    "name": "درآمد دشتی",
+    "nameTrans": "Darāmad-e Dašti"
+  },
   "daramad-e_mahur": {
     "name": "درآمد ماهور",
     "nameTrans": "Darāmad-e Māhur"
   },
-  "daramad-e_dashti": {
-    "name": "درآمد دشتی",
-    "nameTrans": "Darāmad-e Dašti"
+  "daramad-e_nava": {
+    "name": "درآمد نوا",
+    "nameTrans": "Darāmad-e Navā"
+  },
+  "daramad-e_segah": {
+    "name": "درآمد سه‌گاه",
+    "nameTrans": "Darāmad-e Segāh"
   }
 }
