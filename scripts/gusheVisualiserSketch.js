@@ -10,6 +10,7 @@ var backColor;
 var backColorTrans;
 var frontColor;
 var shadeColor;
+var lineColor;
 
 var recordingsInfo;
 var recordingsList;
@@ -122,10 +123,18 @@ function setup () {
   strokeJoin(ROUND);
   strokeCap(ROUND);
 
-  backColor = color(240, 128, 128);
+  backColor = color(160, 231, 229);
+  // backColor = color(240, 128, 128);
   backColorTrans = color(120, 0, 0, 100);
-  frontColor = color(120, 0, 0);
+  frontColor = color(212, 160, 23);
+  // frontColor = color(1, 97, 94);
+  // frontColor = color(120, 0, 0);
   shadeColor = color(120, 0, 0);
+  // lineColor = color(212, 160, 23);
+  // lineColor = color(241, 194, 50);
+  // lineColor = color(248, 229, 161);
+  // lineColor = color(244, 208, 111);
+  lineColor = color(1, 97, 94);
 
   navBox = new CreateNavigationBox();
   navCursor = new CreateNavCursor();
@@ -190,8 +199,10 @@ function draw () {
   textStyle(NORMAL);
   textSize(title_size);
   strokeWeight(5);
-  stroke(frontColor);
-  fill(backColor);
+  stroke(lineColor);
+  fill(frontColor);
+  // stroke(frontColor);
+  // fill(backColor);
   if (gusheName != undefined) {
     var gusheW = textWidth(gusheName);
   }
@@ -270,8 +281,8 @@ function draw () {
           stroke(255, 0, 0);
           fill(255, 0, 0);
         } else {
-          stroke(255);
-          fill(255);
+          stroke(lineColor);
+          fill(lineColor);
         }
         strokeWeight(2);
         // line(svaraLineX1+i, lineY1, svaraLineX1+i+1, lineY2);
@@ -290,8 +301,10 @@ function draw () {
     if (p != "s") {
       var targetY = map(p, minPitch, maxPitch, cursorBottom, cursorTop);
       cursorY += (targetY - cursorY) * easing;
-      stroke(frontColor);
-      strokeWeight(1);
+      // stroke(frontColor);
+      stroke(lineColor);
+      strokeWeight(2);
+      fill(frontColor);
       ellipse(melCursorX, cursorY, melCursorRadius, melCursorRadius);
       line(leftMargin, targetY, histBoundary-20, targetY);
     }
@@ -517,12 +530,13 @@ function CreateNavCursor () {
       }
     }
 
-    if (navBox.x2 - navCursorW/2 - this.x < 0.1) {
+    if (navBox.x2 - navCursorW/2 - this.x < 0.3) {
       buttonPlay.html(lang_start);
-      track.pause();
+      track.stop();
       paused = true;
       // currentTime = 0;
       // phraseIndex = 0;
+      console.log('End playing')
     }
   }
 
