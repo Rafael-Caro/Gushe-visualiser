@@ -336,9 +336,12 @@ function start () {
   // currentPhrase = undefined;
   // melodicLine = {}
   // phrasesTimestamps = [];
-  svaraList = [];
-  soundList = {};
+  // svaraList = [];
+  // soundList = {};
   // phrasesList = [];
+
+  semitoneLines = [];
+  histogram = [];
 
   var currentRecording = recordingsInfo[recordingsList[selectMenu.value()].mbid];
   trackFile = currentRecording.info.trackFile;
