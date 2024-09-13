@@ -273,7 +273,7 @@ function draw () {
           stroke(255);
           fill(255);
         }
-        strokeWeight(4);
+        strokeWeight(2);
         // line(svaraLineX1+i, lineY1, svaraLineX1+i+1, lineY2);
         line(histBoundary+i, lineY1, histBoundary+i+1, lineY2);
       }
