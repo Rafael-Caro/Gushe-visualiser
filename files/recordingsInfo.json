@@ -58,5 +58,50 @@
       "max": 1000,
       "min": -400
     }
+  },
+  "0ae4c5e8-2fda-404b-bc17-d2504c67d8b0": {
+    "info": {
+      "title": "Darāmad-e Segāh",
+      "artist": "Mohammad Khodadadi",
+      "link": "https://musicbrainz.org/recording/0ae4c5e8-2fda-404b-bc17-d2504c67d8b0",
+      "trackFile": "0ae4c5e8-2fda-404b-bc17-d2504c67d8b0.mp3",
+      "duration": 120
+    },
+    "gushe": {
+      "gushe": "daramad-e_segah",
+      "shahed": 314.06,
+      "max": 2485,
+      "min": -404
+    }
+  },
+  "e666047f-d38f-416f-85c6-e345f4286e50": {
+    "info": {
+      "title": "Darāmad-e Abuatā",
+      "artist": "Pouya Khoshravesh",
+      "link": "https://musicbrainz.org/recording/e666047f-d38f-416f-85c6-e345f4286e50",
+      "trackFile": "e666047f-d38f-416f-85c6-e345f4286e50.mp3",
+      "duration": 98
+    },
+    "gushe": {
+      "gushe": "daramad-e_abuata",
+      "shahed": 529.936,
+      "max": 1024,
+      "min": -4758
+    }
+  },
+  "66a75b20-87a4-4ee8-b1b5-5d1d96749db5": {
+    "info": {
+      "title": "Darāmad-e Dašti",
+      "artist": "Reza Zalpour",
+      "link": "https://musicbrainz.org/recording/66a75b20-87a4-4ee8-b1b5-5d1d96749db5",
+      "trackFile": "66a75b20-87a4-4ee8-b1b5-5d1d96749db5.mp3",
+      "duration": 56
+    },
+    "gushe": {
+      "gushe": "daramad-e_segah",
+      "shahed": 227.61,
+      "max": 500,
+      "min": -972
+    }
   }
 }
